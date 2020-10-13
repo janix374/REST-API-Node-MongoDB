@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const ProductRoutes = require('./api/routes/products');
-const orderRoutes = require('./api/routes/orders');
+const OrderRoutes = require('./api/routes/orders');
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
@@ -14,7 +14,8 @@ db.once('open', () => console.log('Connected to Database'));
 
 app.use(morgan('dev'));
 
-//The "extended" syntax allows for rich objects and arrays to be encoded into the URL-encoded format, allowing for a JSON-like experience with URL-encoded.
+app.use('/uploads', express.static('uploads'));
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
@@ -29,12 +30,14 @@ app.use((req, res, next) => {
 })
 
 app.use('/products', ProductRoutes);
-app.use('/orders', orderRoutes);
+app.use('/orders', OrderRoutes);
 
 //Error handling
 app.use((req, res, next) => {
     const error = new Error('Not found');
+    //fiding rotue is not found
     error.status = 404;
+    //forward error request
     next(error);
 });
 
