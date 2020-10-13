@@ -4,6 +4,8 @@ Used in the project
 - node
 - express
 - body-parser
+- muler
+- mongoose
 
 Database - mongoDB
 
